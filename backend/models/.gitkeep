@@ -1,0 +1,3 @@
+# AI Model directory to place weights
+# Place your 'best.onnx' file here if you want to deploy under Python backend server.
+# Otherwise, we recommend putting it under /public/best.onnx for zero-cost client run.

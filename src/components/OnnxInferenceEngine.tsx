@@ -109,13 +109,21 @@ console.log("Detected transmission components securely in browser!", boxes);`;
       <div className="p-4 rounded-xl bg-purple-50/70 border border-purple-200 text-xs text-purple-950 space-y-2 leading-relaxed">
         <h5 className="font-bold flex items-center text-purple-900">
           <Server className="w-4 h-4 mr-1.5 text-[#D4AF37]" />
-          สถาปัตยกรรมแนะนำสำหรับ vercel (Cloud Architectural Trade-offs)
+          การวางไฟล์โมเดล best.onnx ในแต่ละโฟลเดอร์รันไทม์
         </h5>
         <p className="font-light">
-          เนื่องด้วยระบบปลายทางจะนำไปติดตั้งที่ <b>Vercel (Serverless Function)</b> ซึ่งมีข้อจำกัดสิทธิ์พื้นที่เก็บไฟล์และระยะเวลาประมวลผล (50MB package limits & timeout) หากรันโมเดล .onnx ที่ฝั่ง Server ด้วย Python/FastAPI จะประสบปัญหากับขนาด Image และค่าน้ำหนักโมเดลขนาดใหญ่ที่เกินลิมิต ส่งผลให้รันไม่ได้และมีปัญหา Cold Start
+          ระบบจัดแบ่งโครงสร้างเป็น <b>Frontend</b> และ <b>Backend (FastAPI)</b> แยกโฟลเดอร์กันแล้ว คุณสามารถวางไฟล์ <code>best.onnx</code> ได้ตามสถาปัตยกรรมที่เลือกดังนี้:
         </p>
+        <ul className="list-disc pl-5 space-y-1 font-light bg-white/60 p-2.5 rounded-lg border border-purple-100">
+          <li>
+            <b>ทางเลือกที่ 1 (ฝั่ง Client-Side WASM):</b> นำไปวางในโฟลเดอร์ <code className="text-purple-800 font-bold">/public/best.onnx</code> ทันที เพื่อให้เบราว์เซอร์สามารถดาวน์โหลดไปประมวลผลโลคอลได้โดยตรง ปลอดภัย และลดภาระเซิร์ฟเวอร์
+          </li>
+          <li>
+            <b>ทางเลือกที่ 2 (ฝั่ง Python FastAPI Server):</b> นำไปวางไว้ภายใต้โฟลเดอร์ <code className="text-purple-800 font-bold">/backend/models/best.onnx</code> เพื่อให้โปรแกรม <code>main.py</code> โหลดด้วย Python <code>onnxruntime</code> ไปใช้ทำ REST API
+          </li>
+        </ul>
         <p className="font-semibold text-purple-900">
-          💡 สถาปัตยกรรมที่ดีที่สุดคือ: การดาวน์โหลดโมเดลมาโหลดและประมวลผลโดยตรงด่านหน้าผ่านเว็บบราวเซอร์ของผู้ใช้ (Client-Side WASM) หรือใช้ API ทางฝั่งเซิร์ฟเวอร์ในการต่อสายตรงไปยัง LLM Vision API ขนาดใหญ่ (เช่น Gemini) ซึ่งเสถียร รวดเร็ว และรองรับอุปกรณ์ได้ไม่จำกัด!
+          💡 สรุปข้อแนะนำ: แนะนำให้วางที่ <code>/public/best.onnx</code> เพื่อการรันงานบน Vercel ที่ไม่มีค่าเช่ารายเดือนและขนาดเซิร์ฟเวอร์เกินลิมิต 50MB-100MB แต่ถ้าต้องการรันโมเดลบนคลาวด์ใหญ่หรือ Docker โครงสร้างแบบ <code>/backend/models/best.onnx</code> ของเราจะพร้อมที่สุด
         </p>
       </div>
 

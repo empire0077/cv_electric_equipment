@@ -1,0 +1,6 @@
+{
+  "name": "Electrical Transmission Grid Material Analyzer",
+  "description": "An AI-powered web analyzer that captures images of power transmission materials, analyzes them using deep learning/Gemini models, draws bounding boxes, and lists detected hardware objects securely.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
